@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="EWAM is an action-centric unified embodied model with emergent depth-wise specialization from semantic understanding through visual foresight to action formation.">
+  <meta name="theme-color" content="#f7f8f5">
+  <title>EWAM — Emergent Depth-Wise Specialization</title>
+  <link rel="stylesheet" href="styles.css?v=20260929-14">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="EWAM home">
+      <span class="wordmark-letter vl">E</span><span class="wordmark-letter video">W</span><span class="wordmark-letter action">A</span><span class="wordmark-letter fusion">M</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="#overview">Overview</a>
+      <a href="#architecture">Model</a>
+      <a href="#specialization">Specialization</a>
+      <a href="#results">Results</a>
+      <a href="#human-data">Human data</a>
+      <a href="#demos">Demos</a>
+      <a href="#authors">Authors</a>
+      <a href="#citation">Cite</a>
+    </nav>
+    <a class="header-paper" href="assets/EWAM_Technical_Report.pdf">Report <span>↗</span></a>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-orbit orbit-one"></div>
+      <div class="hero-orbit orbit-two"></div>
+      <div class="hero-copy">
+        <p class="eyebrow">Unified embodied intelligence</p>
+        <h1>
+          <span class="hero-mark"><span class="vl">E</span><span class="video">W</span><span class="action">A</span><span class="fusion">M</span></span>
+          <span class="hero-title">Emergent Depth‑Wise Specialization <br class="title-break">in a Unified Embodied Model</span>
+        </h1>
+        <p class="hero-deck">From semantic understanding, through visual foresight, to action formation.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="assets/EWAM_Technical_Report.pdf">Technical report</a>
+          <a class="button secondary disabled" aria-disabled="true">Code <small>coming soon</small></a>
+          <a class="button secondary disabled" aria-disabled="true" data-model-link>Model <small>coming soon</small></a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-label="EWAM depth-wise specialization">
+        <div class="depth-rail">
+          <span>Network depth · shallow to deep</span>
+          <div class="rail-line"></div>
+        </div>
+        <article class="hero-stage vl-stage">
+          <div class="stage-number">01</div>
+          <div>
+            <p>Shallow layers</p>
+            <h2>Semantic understanding</h2>
+            <span>Action queries retrieve instruction and current-scene context from the VL expert.</span>
+          </div>
+        </article>
+        <article class="hero-stage video-stage">
+          <div class="stage-number">02</div>
+          <div>
+            <p>Intermediate layers</p>
+            <h2>Visual foresight</h2>
+            <span>Attention shifts toward predicted future-frame representations.</span>
+          </div>
+        </article>
+        <article class="hero-stage action-stage">
+          <div class="stage-number">03</div>
+          <div>
+            <p>Deep layers</p>
+            <h2>Action formation</h2>
+            <span>Action self-attention dominates as the model refines motor trajectories.</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section intro-section" id="overview">
+      <div class="section-kicker">01 / Overview</div>
+      <div class="section-heading split-heading">
+        <h2>One model.<br>Three forms of computation.</h2>
+        <p>The vision-language expert contributes semantics and the video expert contributes prediction.<br>EWAM lets one action stream read both at every depth.</p>
+      </div>
+      <div class="key-points">
+        <article class="reveal">
+          <span>Model</span>
+          <h3>One action-centric model</h3>
+          <p>Action tokens read semantic, visual, predicted-future, and action information at every layer.</p>
+        </article>
+        <article class="reveal">
+          <span>Finding</span>
+          <h3>An emergent handoff</h3>
+          <p>Without layer-wise supervision, attention moves from VL to predicted future to action across depth.</p>
+        </article>
+        <article class="reveal">
+          <span>Results</span>
+          <h3>Strong in sim and on robots</h3>
+          <p>Surpasses VLA, WAM, and hybrid baselines; human data and subtask supervision add further gains.</p>
+        </article>
+      </div>
+      <figure class="figure-card reveal">
+        <figcaption class="figure-card-head">
+          <div>
+            <h3>Where does action attention go?</h3>
+            <p>Existing models let one expert dominate action attention.<br><strong>EWAM hands attention off from vision-language, to predicted future, to action as depth grows.</strong></p>
+          </div>
+          <div class="figure-tags"><em class="tag-handoff">Depth-wise handoff</em></div>
+        </figcaption>
+        <button class="figure-shell" type="button" data-lightbox="assets/images/paradigm-comparison.png" aria-label="Enlarge paradigm comparison">
+          <img src="assets/images/paradigm-comparison.png" alt="Comparison of VLA, WAM, Motus, and EWAM architectures and action-attention maps">
+          <span class="figure-expand">Expand figure</span>
+        </button>
+      </figure>
+    </section>
+
+    <section class="section architecture-section" id="architecture">
+      <div class="section-kicker">02 / Model &amp; training</div>
+      <div class="section-heading">
+        <h2>Action-centric asymmetric attention</h2>
+        <p>The action stream can read every expert. Perceptual queries remain within their own streams.</p>
+      </div>
+      <div class="architecture-grid">
+        <button class="figure-shell architecture-figure reveal" type="button" data-lightbox="assets/images/architecture.png" aria-label="Enlarge architecture figure">
+          <img src="assets/images/architecture.png" alt="EWAM unified architecture with vision-language, action, and video experts">
+          <span class="figure-expand">Expand figure</span>
+        </button>
+        <div class="expert-stack">
+          <article class="expert-card vl-card reveal">
+            <span class="expert-index">VL</span>
+            <div>
+              <h3>Vision-language expert</h3>
+              <p>Qwen3-VL features encode the instruction and current image into layer-aligned semantic representations.</p>
+            </div>
+          </article>
+          <article class="expert-card video-card reveal">
+            <span class="expert-index">V</span>
+            <div>
+              <h3>Video expert</h3>
+              <p>A Wan2.2 video expert evolves noisy future-video latents into predictive visual context.</p>
+            </div>
+          </article>
+          <article class="expert-card action-card reveal">
+            <span class="expert-index">A</span>
+            <div>
+              <h3>Action expert</h3>
+              <p>Noisy action chunks query semantic, observed, predicted, and action keys in a shared forward process.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="recipe-head">
+        <h3>Training recipe</h3>
+      </div>
+      <div class="recipe-grid">
+        <button class="recipe-card expand-trigger reveal" type="button" data-expand="drawer-robot-data" aria-expanded="false" aria-controls="drawer-robot-data">
+          <span class="recipe-tag">Pretraining regime A</span>
+          <strong>300K <small>trajectories · ~1,800 h</small></strong>
+          <h4>Cross-embodiment robot data</h4>
+          <p>Curated from about 3,250 hours of open-source recordings, including GM-100, RoboCOIN, RoboMIND, RoboChallenge, RDT, and simulation data.</p>
+          <span class="expand-hint">Show data composition<i aria-hidden="true"></i></span>
+        </button>
+        <article class="recipe-card reveal">
+          <span class="recipe-tag">Pretraining regime B</span>
+          <strong>2,084 <small>hours</small></strong>
+          <h4>Human egocentric video</h4>
+          <p>VITRA-1M, EgoDex, and Xperience, with wrist motion expressed as camera-relative end-effector displacements so human wrists and robot end-effectors share one task-space layout.</p>
+          <a class="text-link" href="#human-data">How human data is used →</a>
+        </article>
+        <article class="recipe-card reveal">
+          <span class="recipe-tag">Task-specific post-training</span>
+          <strong>2 heads <small>subtask text · phase index</small></strong>
+          <h4>Long-horizon awareness</h4>
+          <p>A lightweight decoder predicts the active subtask and an MLP head regresses the phase index from the action stream. Both losses are added only during post-training; no external planner is used.</p>
+          <a class="text-link" href="#results">See the long-horizon results →</a>
+        </article>
+      </div>
+      <div class="table-drawer image-drawer" id="drawer-robot-data" data-expand-group="training" hidden>
+        <div class="table-drawer-head">
+          <div><span>Robot pretraining data</span><h3>Dataset composition of the curated 1,800 hours</h3></div>
+          <button class="drawer-close" type="button" data-expand-close aria-label="Close">×</button>
+        </div>
+        <img src="assets/images/robot-data.png" alt="Composition of the curated robot pretraining data by source" loading="lazy">
+      </div>
+    </section>
+
+    <section class="section specialization-section" id="specialization">
+      <div class="section-kicker">03 / Emergent specialization</div>
+      <div class="section-heading split-heading">
+        <h2>A learned handoff across network depth</h2>
+        <p>
+          The architecture does not prescribe shallow, middle, or deep roles. The organization appears during training,
+          replicates across tasks, and remains stable over denoising steps.
+        </p>
+      </div>
+      <div class="stage-cards">
+        <article class="depth-card vl-depth reveal">
+          <div class="depth-top"><span>Layers 0–9</span><strong>75.4%</strong></div>
+          <h3>Shallow understanding</h3>
+          <p>VL tokens receive most action-query attention, grounding the instruction in the current scene.</p>
+          <div class="mini-bar"><span style="width:75.4%"></span></div>
+        </article>
+        <article class="depth-card video-depth reveal">
+          <div class="depth-top"><span>Layers 10–19</span><strong>Layer 13</strong></div>
+          <h3>Intermediate foresight</h3>
+          <p>Raw future-frame attention overtakes VL-image attention as prediction becomes the dominant visual source.</p>
+          <div class="mini-bar"><span style="width:58%"></span></div>
+        </article>
+        <article class="depth-card action-depth reveal">
+          <div class="depth-top"><span>Layers 20–29</span><strong>59.5%</strong></div>
+          <h3>Deep action formation</h3>
+          <p>Action self-attention dominates while concise semantic and predictive context is retained.</p>
+          <div class="mini-bar"><span style="width:59.5%"></span></div>
+        </article>
+      </div>
+      <figure class="figure-card spaced-card reveal">
+        <figcaption class="figure-card-head">
+          <div>
+            <h3>How action attention shifts with depth</h3>
+            <p>Each map shows the share of action-query attention on one source, per layer (rows) and inference step (columns).<br><strong>VL dominates shallow layers, video peaks in the middle, and action self-attention takes over in deep layers.</strong></p>
+          </div>
+        </figcaption>
+        <button class="figure-shell" type="button" data-lightbox="assets/images/depth-attention-trend.png" aria-label="Enlarge attention trend across depth">
+          <img src="assets/images/depth-attention-trend.png" alt="Action attention to VL, video, and action tokens across 30 layers and four inference steps" loading="lazy">
+          <span class="figure-expand">Expand figure</span>
+        </button>
+      </figure>
+      <figure class="figure-card spaced-card reveal">
+        <figcaption class="figure-card-head">
+          <div>
+            <h3>Which visual source is read at each depth?</h3>
+            <p>Splitting visual attention into the current image and the predicted future frames.<br><strong>Predicted frames replace the current image as the main visual source from about layer 13, on one task (a) and across all 50 RoboTwin tasks (b).</strong></p>
+          </div>
+        </figcaption>
+        <button class="figure-shell" type="button" data-lightbox="assets/images/depth-specialization.png" aria-label="Enlarge visual handoff figure">
+          <img src="assets/images/depth-specialization.png" alt="Fine-grained visual handoff across transformer depth" loading="lazy">
+          <span class="figure-expand">Expand figure</span>
+        </button>
+      </figure>
+      <div class="mechanism-grid">
+        <article class="chart-panel reveal">
+          <header class="chart-header">
+            <div>
+              <span>Learned during training</span>
+              <h3>The handoff forms within the first few hundred steps</h3>
+            </div>
+          </header>
+          <div class="ckpt-figure" data-active="40000">
+            <p class="ckpt-ylabel">Future-frame minus VL-image attention (pp)</p>
+            <svg class="ckpt-chart" viewBox="0 0 560 250" role="img" aria-label="Future-frame minus VL-image attention across 30 layers at four training checkpoints">
+            <rect class="ckpt-band" x="209.1" y="22" width="173.8" height="184"/>
+            <text class="ckpt-zone" x="122.2" y="14" text-anchor="middle">Shallow</text>
+            <text class="ckpt-zone" x="296.0" y="14" text-anchor="middle">Middle</text>
+            <text class="ckpt-zone" x="469.8" y="14" text-anchor="middle">Deep</text>
+            <line class="ckpt-grid" x1="44" x2="548" y1="189.3" y2="189.3"/>
+            <text class="ckpt-tick" x="36" y="192.3" text-anchor="end">-60</text>
+            <line class="ckpt-grid" x1="44" x2="548" y1="155.8" y2="155.8"/>
+            <text class="ckpt-tick" x="36" y="158.8" text-anchor="end">-40</text>
+            <line class="ckpt-grid" x1="44" x2="548" y1="122.4" y2="122.4"/>
+            <text class="ckpt-tick" x="36" y="125.4" text-anchor="end">-20</text>
+            <line class="ckpt-grid zero" x1="44" x2="548" y1="88.9" y2="88.9"/>
+            <text class="ckpt-tick" x="36" y="91.9" text-anchor="end">0</text>
+            <line class="ckpt-grid" x1="44" x2="548" y1="55.5" y2="55.5"/>
+            <text class="ckpt-tick" x="36" y="58.5" text-anchor="end">20</text>
+            <line class="ckpt-grid" x1="44" x2="548" y1="22.0" y2="22.0"/>
+            <text class="ckpt-tick" x="36" y="25.0" text-anchor="end">40</text>
+            <text class="ckpt-tick" x="44.0" y="221" text-anchor="middle">0</text>
+            <text class="ckpt-tick" x="130.9" y="221" text-anchor="middle">5</text>
+            <text class="ckpt-tick" x="217.8" y="221" text-anchor="middle">10</text>
+            <text class="ckpt-tick" x="304.7" y="221" text-anchor="middle">15</text>
+            <text class="ckpt-tick" x="391.6" y="221" text-anchor="middle">20</text>
+            <text class="ckpt-tick" x="478.5" y="221" text-anchor="middle">25</text>
+            <text class="ckpt-tick" x="548.0" y="221" text-anchor="middle">29</text>
+            <text class="ckpt-axis" x="296.0" y="240" text-anchor="middle">Transformer layer</text>
+            <text class="ckpt-note" x="50" y="33.7">↑ future &gt; image</text>
+            <text class="ckpt-note" x="50" y="196.0">↓ image &gt; future</text>
+            <path class="ckpt-line s50" data-step="50" d="M44.0,171.3 L61.4,163.3 L78.8,180.0 L96.1,147.9 L113.5,115.7 L130.9,132.0 L148.3,141.5 L165.7,95.7 L183.0,105.3 L200.4,92.6 L217.8,77.1 L235.2,104.9 L252.6,98.7 L269.9,123.2 L287.3,109.4 L304.7,118.1 L322.1,121.2 L339.4,108.4 L356.8,106.8 L374.2,141.3 L391.6,169.8 L409.0,146.6 L426.3,175.5 L443.7,195.5 L461.1,145.6 L478.5,162.9 L495.9,146.8 L513.2,106.4 L530.6,140.6 L548.0,129.4"><title>50 steps</title></path>
+            <path class="ckpt-line s150" data-step="150" d="M44.0,85.2 L61.4,86.9 L78.8,115.0 L96.1,108.8 L113.5,99.9 L130.9,83.0 L148.3,91.5 L165.7,97.3 L183.0,65.0 L200.4,72.6 L217.8,62.0 L235.2,46.1 L252.6,39.2 L269.9,49.0 L287.3,33.8 L304.7,35.8 L322.1,44.6 L339.4,54.7 L356.8,47.4 L374.2,62.4 L391.6,33.7 L409.0,43.5 L426.3,52.9 L443.7,38.3 L461.1,37.0 L478.5,48.2 L495.9,53.1 L513.2,74.3 L530.6,62.3 L548.0,86.6"><title>150 steps</title></path>
+            <path class="ckpt-line s1000" data-step="1000" d="M44.0,100.8 L61.4,102.3 L78.8,123.2 L96.1,122.6 L113.5,123.4 L130.9,120.6 L148.3,137.2 L165.7,162.7 L183.0,139.4 L200.4,155.6 L217.8,114.1 L235.2,104.2 L252.6,72.1 L269.9,79.6 L287.3,59.1 L304.7,61.8 L322.1,72.6 L339.4,77.7 L356.8,84.1 L374.2,67.0 L391.6,84.6 L409.0,70.8 L426.3,74.1 L443.7,83.4 L461.1,70.8 L478.5,70.9 L495.9,84.6 L513.2,83.8 L530.6,83.5 L548.0,88.0"><title>1,000 steps</title></path>
+            <path class="ckpt-line s40000" data-step="40000" d="M44.0,88.6 L61.4,137.2 L78.8,168.7 L96.1,158.6 L113.5,152.9 L130.9,138.6 L148.3,124.0 L165.7,151.0 L183.0,127.1 L200.4,116.1 L217.8,123.4 L235.2,99.3 L252.6,94.3 L269.9,67.8 L287.3,62.6 L304.7,61.5 L322.1,78.4 L339.4,71.5 L356.8,68.3 L374.2,72.1 L391.6,77.6 L409.0,74.4 L426.3,72.7 L443.7,71.9 L461.1,67.4 L478.5,69.2 L495.9,71.5 L513.2,70.4 L530.6,69.1 L548.0,84.7"><title>40,000 steps</title></path>
+            </svg>
+            <div class="ckpt-legend"><button type="button" class="ckpt-key s50" data-step="50"><i></i>50 steps</button><button type="button" class="ckpt-key s150" data-step="150"><i></i>150 steps</button><button type="button" class="ckpt-key s1000" data-step="1000"><i></i>1,000 steps</button><button type="button" class="ckpt-key s40000" data-step="40000"><i></i>40,000 steps</button></div>
+            <ol class="ckpt-steps">
+              <li data-step="50" tabindex="0"><b>50 steps</b><p>VL-image leads at almost every layer; no division yet.</p></li>
+              <li data-step="150" tabindex="0"><b>150 steps</b><p>Future frames lead from layer 8 onward.</p></li>
+              <li data-step="40000" tabindex="0"><b>40,000 steps</b><p>Shallow layers return to the image; future leads from layer 13 onward.</p></li>
+            </ol>
+          </div>
+          <p class="chart-note">One training run without robot pretraining. The attention mask sets which sources are reachable, not the depth at which each is used. Hover a step to highlight it.</p>
+        </article>
+        <article class="chart-panel reveal">
+          <header class="chart-header">
+            <div>
+              <span>Action generation depends on it</span>
+              <h3>Masking keys at inference, by source and depth</h3>
+            </div>
+            <strong>Success (%)</strong>
+          </header>
+          <div class="horizontal-chart wide-labels" aria-label="RoboTwin randomized success under inference-time attention masks">
+            <div class="chart-row emphasis">
+              <span class="method">Full model</span>
+              <div class="bar-track"><span class="bar ours" style="width:92.80%"></span></div>
+              <b>92.80</b>
+            </div>
+            <div class="chart-row">
+              <span class="method">All video · L0–9</span>
+              <div class="bar-track"><span class="bar baseline" style="width:91.98%"></span></div>
+              <b>91.98</b>
+            </div>
+            <div class="chart-row">
+              <span class="method">VL · L0–9</span>
+              <div class="bar-track"><span class="bar vl-bar" style="width:76.53%"></span></div>
+              <b>76.53</b>
+            </div>
+            <div class="chart-row">
+              <span class="method">Condition · L10–19</span>
+              <div class="bar-track"><span class="bar baseline" style="width:81.40%"></span></div>
+              <b>81.40</b>
+            </div>
+            <div class="chart-row">
+              <span class="method">Future · L10–19</span>
+              <div class="bar-track"><span class="bar future-bar" style="width:3.55%"></span></div>
+              <b>3.55</b>
+            </div>
+            <div class="chart-row">
+              <span class="method">All video · L10–19</span>
+              <div class="bar-track"><span class="bar future-bar" style="width:0.25%"></span></div>
+              <b>0.25</b>
+            </div>
+            <div class="chart-row">
+              <span class="method">All video · L20–29</span>
+              <div class="bar-track"><span class="bar baseline" style="width:65.82%"></span></div>
+              <b>65.82</b>
+            </div>
+          </div>
+          <ol class="depth-takeaways">
+            <li class="vl-take"><span>Shallow · L0–9</span><b>VL matters</b><p>−16.27 without VL; only −0.82 without video.</p></li>
+            <li class="video-take"><span>Middle · L10–19</span><b>Future is critical</b><p>−89.25 when predicted-future keys are masked.</p></li>
+          </ol>
+          <p class="chart-note">One fixed robot-pretrained checkpoint on RoboTwin Randomized (50 tasks × 100 episodes), masked at inference without retraining.</p>
+          <button class="text-button expand-trigger-inline" type="button" data-expand="table-intervention" aria-expanded="false" aria-controls="table-intervention">Show Table 1 with training-time ablations<i aria-hidden="true"></i></button>
+        </article>
+      </div>
+      <div class="table-drawer" id="table-intervention" data-expand-group="mechanism" hidden>
+        <div class="table-drawer-head">
+          <div><span>Table 1 · Layer-targeted interventions on RoboTwin Randomized</span><h3>Training-time ablations and inference-time masks</h3></div>
+          <button class="drawer-close" type="button" data-expand-close aria-label="Close table">×</button>
+        </div>
+        <div class="drawer-split even">
+          <div>
+            <h4>Training results (without pretraining)</h4>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead><tr><th scope="col">Configuration</th><th scope="col">Score</th><th scope="col">Δ</th></tr></thead>
+                <tbody>
+                <tr class="ours-row"><td>Full unified model</td><td><strong>83</strong></td><td>–</td></tr>
+                <tr><td>Symmetric full attention</td><td>81</td><td>−2</td></tr>
+                <tr><td>No VL access, layers 0–9</td><td>78</td><td>−5</td></tr>
+                <tr><td>No video access, layers 10–19</td><td>78</td><td>−5</td></tr>
+                <tr><td>Action only, layers 24–29</td><td>83</td><td>0</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <h4>Inference results (robot-pretrained model)</h4>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead><tr><th scope="col">Configuration</th><th scope="col">Score</th><th scope="col">Δ</th></tr></thead>
+                <tbody>
+                <tr class="ours-row"><td>Full unified model</td><td><strong>92.80</strong></td><td>–</td></tr>
+                <tr><td>Mask all video, layers 0–9</td><td>91.98</td><td>−0.82</td></tr>
+                <tr><td>Mask VL, layers 0–9</td><td>76.53</td><td>−16.27</td></tr>
+                <tr><td>Mask condition, layers 10–19</td><td>81.40</td><td>−11.40</td></tr>
+                <tr><td>Mask future, layers 10–19</td><td>3.55</td><td>−89.25</td></tr>
+                <tr><td>Mask all video, layers 10–19</td><td>0.25</td><td>−92.55</td></tr>
+                <tr><td>Mask all video, layers 20–29</td><td>65.82</td><td>−26.98</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <p class="table-caption">The left panel reports independently trained models without pretraining; the right panel masks action-attention keys only at inference time in one fixed cross-embodiment robot-pretrained checkpoint. Deltas are relative to the full-model baseline within each panel and should not be compared across panels. “Action only” removes both VL and video keys from action queries in the specified layers.</p>
+      </div>
+      <div class="evidence-grid">
+        <article class="evidence-card">
+          <span>Cross-task replication</span>
+          <strong>50 / 50</strong>
+          <p>Every RoboTwin task exhibits shallow VL dominance.</p>
+        </article>
+        <article class="evidence-card">
+          <span>Denoising stability</span>
+          <strong>0.998</strong>
+          <p>Mean pairwise correlation of attention profiles across measured denoising steps.</p>
+        </article>
+        <button class="evidence-card expand-trigger" type="button" data-expand="table-injection" aria-expanded="false" aria-controls="table-injection">
+          <span>Counterfactual future injection</span>
+          <strong>25/25 → 4/25</strong>
+          <p>Injecting another rollout’s intermediate future features into five tasks redirects actions and breaks success.</p>
+          <em class="expand-hint">Show Table 2<i aria-hidden="true"></i></em>
+        </button>
+      </div>
+      <div class="table-drawer" id="table-injection" data-expand-group="evidence" hidden>
+        <div class="table-drawer-head">
+          <div><span>Table 2 · Counterfactual future-feature injection</span><h3>Donor future features steer target rollouts</h3></div>
+          <button class="drawer-close" type="button" data-expand-close aria-label="Close table">×</button>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th scope="col">Task</th><th scope="col">No injection</th><th scope="col">Injection setting</th><th scope="col">Observed behavior or outcome</th><th scope="col">Success</th></tr></thead>
+            <tbody>
+              <tr><th scope="rowgroup" rowspan="2">Adjust Bottle</th><td class="c" rowspan="2">5/5</td><td>Left-facing (43, 46)</td><td class="wrap">Donor-directed first grasp misses; both recover after cutoff</td><td>2/2</td></tr>
+              <tr><td>Right-facing (44, 45, 47)</td><td class="wrap">Donor-consistent right arm instead of required left arm; no recovery</td><td>0/3</td></tr>
+              <tr><th scope="rowgroup">Place Empty Cup</th><td class="c">5/5</td><td>All targets (43–47)</td><td class="wrap">All injected rollouts fail</td><td>0/5</td></tr>
+              <tr><th scope="rowgroup">Stack Blocks Two</th><td class="c">5/5</td><td>All targets (43–47)</td><td class="wrap">All injected rollouts fail</td><td>0/5</td></tr>
+              <tr><th scope="rowgroup">Click Bell</th><td class="c">5/5</td><td>All targets (43–47)</td><td class="wrap">Only seed 46 remains successful</td><td>1/5</td></tr>
+              <tr><th scope="rowgroup">Grab Roller</th><td class="c">5/5</td><td>All targets (43–47)</td><td class="wrap">Only seed 45 remains successful</td><td>1/5</td></tr>
+              <tr class="ours-row"><th scope="rowgroup">Overall</th><td class="c"><strong>25/25</strong></td><td>All injected targets</td><td class="wrap">Success decreases from 100% to 16%</td><td><strong>4/25</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-caption">For each task, future-frame keys and values from a successful donor rollout (seed 100) are injected into target seeds 43–47 at layers 10–19 during the first three policy calls, while each target keeps its own condition-frame, VL, and action representations.</p>
+      </div>
+    </section>
+
+    <section class="section results-section" id="results">
+      <div class="section-kicker">04 / Results</div>
+      <div class="section-heading split-heading">
+        <h2>Strong policies across simulation and robots</h2>
+        <p>EWAM is evaluated under complementary protocols: RoboTwin 2.0 clean-to-random and in-domain adaptation, the four LIBERO suites, and seven tasks on three real-world embodiments. Click a card to open the full table.</p>
+      </div>
+      <div class="benchmark-grid">
+        <button class="benchmark-card expand-trigger reveal" type="button" data-expand="table-c2r" aria-expanded="false" aria-controls="table-c2r">
+          <div class="benchmark-label"><span>RoboTwin 2.0</span><em>Clean-to-Random</em></div>
+          <div class="benchmark-score">77.2%</div>
+          <div class="score-track"><span style="width:77.2%"></span></div>
+          <p>Average of 82.2% on clean and 72.1% on randomized scenes after clean-only adaptation.</p>
+          <span class="expand-hint">Show Table 4<i aria-hidden="true"></i></span>
+        </button>
+        <button class="benchmark-card expand-trigger reveal" type="button" data-expand="table-indomain" aria-expanded="false" aria-controls="table-indomain">
+          <div class="benchmark-label"><span>RoboTwin 2.0</span><em>In-domain</em></div>
+          <div class="benchmark-score">92.9%</div>
+          <div class="score-track"><span style="width:92.9%"></span></div>
+          <p>93.0% on clean scenes and 92.8% under randomization.</p>
+          <span class="expand-hint">Show Table 5<i aria-hidden="true"></i></span>
+        </button>
+        <button class="benchmark-card expand-trigger reveal" type="button" data-expand="table-libero" aria-expanded="false" aria-controls="table-libero">
+          <div class="benchmark-label"><span>LIBERO</span><em>Four suites</em></div>
+          <div class="benchmark-score">98.8%</div>
+          <div class="score-track"><span style="width:98.8%"></span></div>
+          <p>Average success across Spatial, Object, Goal, and Long-Horizon.</p>
+          <span class="expand-hint">Show Table 6<i aria-hidden="true"></i></span>
+        </button>
+      </div>
+        <div class="table-drawer" id="table-c2r" data-expand-group="benchmarks" hidden>
+          <div class="table-drawer-head">
+            <div><span>Table 4 · RoboTwin 2.0 leaderboard</span><h3>Clean-to-random performance</h3></div>
+            <button class="drawer-close" type="button" data-expand-close aria-label="Close table">×</button>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table grouped">
+              <thead><tr><th scope="col">Paradigm</th><th scope="col">Model</th><th scope="col">C2C (%)</th><th scope="col">C2R (%)</th><th scope="col">Average (%)</th></tr></thead>
+              <tbody>
+              <tr><th scope="rowgroup" rowspan="6">VLA</th><td>starVLA</td><td>46.52</td><td>3.16</td><td>24.84</td></tr>
+              <tr><td>GalaxeaVLA</td><td>62.70</td><td>12.72</td><td>37.71</td></tr>
+              <tr><td>Xiaomi Robotics-0</td><td>62.90</td><td>18.20</td><td>40.55</td></tr>
+              <tr><td>X-VLA</td><td>68.00</td><td>20.90</td><td>44.45</td></tr>
+              <tr><td>ABot-M0</td><td>57.40</td><td>30.36</td><td>43.88</td></tr>
+              <tr><td>π<sub>0.5</sub></td><td>70.70</td><td>46.00</td><td>58.35</td></tr>
+              <tr><th scope="rowgroup" rowspan="4">WAM</th><td>Fast-WAM</td><td>77.80</td><td>1.90</td><td>39.85</td></tr>
+              <tr><td>ImageWAM</td><td>84.4</td><td>18.3</td><td>51.35</td></tr>
+              <tr><td>X-WAM</td><td>70.00</td><td>25.80</td><td>47.90</td></tr>
+              <tr><td>4D-WAM</td><td>81.5</td><td>41.8</td><td>61.6</td></tr>
+              <tr><th scope="rowgroup" rowspan="2">VLA+WAM</th><td>GigaBrain-0.7</td><td>66.8</td><td>67.9</td><td>67.3</td></tr>
+              <tr class="ours-row"><td>EWAM (Ours)</td><td><strong>82.2</strong></td><td><strong>72.1</strong></td><td><strong>77.2</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-caption">A single policy is adapted on clean demonstrations of all 50 tasks and evaluated with 100 episodes per task under clean-to-clean (C2C) and clean-to-random (C2R) conditions. Average is the mean of C2C and C2R. Official leaderboard values use its 2026-09-01 snapshot. The EWAM row uses cross-embodiment robot-pretrained initialization followed by clean-only downstream adaptation.</p>
+        </div>
+        <div class="table-drawer" id="table-indomain" data-expand-group="benchmarks" hidden>
+          <div class="table-drawer-head">
+            <div><span>Table 5 · RoboTwin 2.0 in-domain</span><h3>Clean and randomized scenes</h3></div>
+            <button class="drawer-close" type="button" data-expand-close aria-label="Close table">×</button>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table grouped">
+              <thead><tr><th scope="col">Paradigm</th><th scope="col">Model</th><th scope="col">Clean (%)</th><th scope="col">Randomized (%)</th><th scope="col">Average (%)</th></tr></thead>
+              <tbody>
+              <tr><th scope="rowgroup" rowspan="6">VLA</th><td>π<sub>0.5</sub></td><td>82.7</td><td>76.8</td><td>79.8</td></tr>
+              <tr><td>ABot-M0</td><td>86.1</td><td>85.1</td><td>85.6</td></tr>
+              <tr><td>LingBot-VLA</td><td>88.6</td><td>86.7</td><td>87.7</td></tr>
+              <tr><td>JoyAI-RA</td><td>90.5</td><td>89.3</td><td>89.9</td></tr>
+              <tr><td>HyVLA-0.5</td><td>90.9</td><td>90.1</td><td>90.5</td></tr>
+              <tr><td>ACE-Ego-0</td><td>91.1</td><td>90.6</td><td>90.9</td></tr>
+              <tr><th scope="rowgroup" rowspan="4">WAM</th><td>GigaWorld-Policy</td><td>86.4</td><td>85.0</td><td>85.7</td></tr>
+              <tr><td>LaWAM</td><td>92.6</td><td>89.8</td><td>91.2</td></tr>
+              <tr><td>LingBot-VA</td><td>92.9</td><td>91.5</td><td>92.2</td></tr>
+              <tr><td>Fast-WAM</td><td>91.9</td><td>91.8</td><td>91.9</td></tr>
+              <tr><th scope="rowgroup" rowspan="4">VLA+WAM</th><td>Motus</td><td>88.7</td><td>87.0</td><td>87.9</td></tr>
+              <tr><td>InternVLA-A1</td><td>89.4</td><td>89.6</td><td>89.5</td></tr>
+              <tr><td>WLA-0</td><td>92.9</td><td>90.0</td><td>91.5</td></tr>
+              <tr class="ours-row"><td>EWAM (Ours)</td><td><strong>93.0</strong></td><td><strong>92.8</strong></td><td><strong>92.9</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-caption">All methods, including EWAM, are adapted on both clean and randomized demonstrations; this protocol differs from the clean-only adaptation in Table 4. Average is the mean of the Clean and Randomized scores.</p>
+        </div>
+        <div class="table-drawer" id="table-libero" data-expand-group="benchmarks" hidden>
+          <div class="table-drawer-head">
+            <div><span>Table 6 · LIBERO</span><h3>Four standard task suites</h3></div>
+            <button class="drawer-close" type="button" data-expand-close aria-label="Close table">×</button>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table grouped">
+              <thead><tr><th scope="col">Paradigm</th><th scope="col">Model</th><th scope="col">Spatial</th><th scope="col">Object</th><th scope="col">Goal</th><th scope="col">Long</th><th scope="col">Average</th></tr></thead>
+              <tbody>
+              <tr><th scope="rowgroup" rowspan="3">VLA</th><td>π<sub>0.5</sub></td><td>98.8</td><td>98.2</td><td>98.0</td><td>92.4</td><td>96.9</td></tr>
+              <tr><td>ABot-M0</td><td>98.8</td><td>99.8</td><td><strong>99.0</strong></td><td>96.6</td><td>98.6</td></tr>
+              <tr><td>Qwen-VLA-Instruct</td><td>–</td><td>–</td><td>–</td><td>–</td><td>97.9</td></tr>
+              <tr><th scope="rowgroup" rowspan="3">WAM</th><td>Fast-WAM</td><td>98.2</td><td><strong>100.0</strong></td><td>97.0</td><td>95.2</td><td>97.6</td></tr>
+              <tr><td>LingBot-VA</td><td>98.5</td><td>99.6</td><td>97.2</td><td><strong>98.5</strong></td><td>98.5</td></tr>
+              <tr><td>LaWAM</td><td><strong>99.4</strong></td><td>99.6</td><td>98.4</td><td>97.0</td><td>98.6</td></tr>
+              <tr><th scope="rowgroup" rowspan="3">VLA+WAM</th><td>Motus</td><td>96.8</td><td>99.8</td><td>96.6</td><td>97.6</td><td>97.7</td></tr>
+              <tr><td>WLA-0</td><td>99.0</td><td><strong>100.0</strong></td><td>97.8</td><td>97.6</td><td>98.6</td></tr>
+              <tr class="ours-row"><td>EWAM (Ours)</td><td>98.6</td><td>99.8</td><td>98.6</td><td>98.2</td><td><strong>98.8</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-caption">Success rate (%) on the four LIBERO suites. Average is the mean across suites. Comparison results are taken from the corresponding published evaluations; a dash indicates that only the overall score was reported.</p>
+        </div>
+      <div class="results-charts">
+
+        <article class="chart-panel reveal">
+          <header class="chart-header">
+            <div>
+              <span>Real-world evaluation</span>
+              <h3>Seven tasks on three embodiments</h3>
+            </div>
+            <div class="chart-legend"><em><i class="pi-data"></i>π<sub>0.5</sub></em><em><i class="with"></i>EWAM</em></div>
+          </header>
+          <div class="pair-chart" aria-label="Real-world success of EWAM and pi 0.5 on seven tasks">
+            <div class="pair-row">
+              <span class="pair-label"><small>Franka</small>Stack Bowls</span>
+              <div class="pair-bars">
+                <div class="pair-bar"><span class="bar baseline" style="width:70%"></span><b>70</b></div>
+                <div class="pair-bar"><span class="bar ours" style="width:80%"></span><b>80</b></div>
+              </div>
+            </div>
+            <div class="pair-row">
+              <span class="pair-label"><small>Franka</small>Object into Box</span>
+              <div class="pair-bars">
+                <div class="pair-bar"><span class="bar baseline" style="width:80%"></span><b>80</b></div>
+                <div class="pair-bar"><span class="bar ours" style="width:90%"></span><b>90</b></div>
+              </div>
+            </div>
+            <div class="pair-row">
+              <span class="pair-label"><small>Dobot</small>Pour Water</span>
+              <div class="pair-bars">
+                <div class="pair-bar"><span class="bar baseline" style="width:30%"></span><b>30</b></div>
+                <div class="pair-bar"><span class="bar ours" style="width:70%"></span><b>70</b></div>
+              </div>
+            </div>
+            <div class="pair-row">
+              <span class="pair-label"><small>Dobot</small>Tidy Desk</span>
+              <div class="pair-bars">
+                <div class="pair-bar"><span class="bar baseline" style="width:20%"></span><b>20</b></div>
+                <div class="pair-bar"><span class="bar ours" style="width:80%"></span><b>80</b></div>
+              </div>
+            </div>
+            <div class="pair-row">
+              <span class="pair-label"><small>Dobot</small>Towel</span>
+              <div class="pair-bars">
+                <div class="pair-bar"><span class="bar baseline" style="width:40%"></span><b>40</b></div>
+                <div class="pair-bar"><span class="bar ours" style="width:40%"></span><b>40</b></div>
+              </div>
+            </div>
+            <div class="pair-row">
+              <span class="pair-label"><small>G1-D</small>Kettle Pouring</span>
+              <div class="pair-bars">
+                <div class="pair-bar"><span class="bar baseline" style="width:60%"></span><b>60</b></div>
+                <div class="pair-bar"><span class="bar ours" style="width:70%"></span><b>70</b></div>
+              </div>
+            </div>
+            <div class="pair-row">
+              <span class="pair-label"><small>G1-D</small>Pour Beans</span>
+              <div class="pair-bars">
+                <div class="pair-bar"><span class="bar baseline" style="width:60%"></span><b>60</b></div>
+                <div class="pair-bar"><span class="bar ours" style="width:80%"></span><b>80</b></div>
+              </div>
+            </div>
+          </div>
+          <p class="chart-note">Success rate (%) on physical robots. EWAM is higher than π<sub>0.5</sub> on six tasks and ties on the Dobot towel task.</p>
+          <button class="text-button" type="button" data-expand="table-real" aria-expanded="false" aria-controls="table-real">Show Tables 7–8 with all baselines<i aria-hidden="true"></i></button>
+          <div class="panel-footer-stat">
+            <strong>66.7%</strong>
+            <div>
+              <h4>Generalization on G1-D pour beans</h4>
+              <p>Held-out cups, placements, and backgrounds, versus 80% in-domain.</p>
+              <button class="text-button" type="button" data-expand="table-generalization" aria-expanded="false" aria-controls="table-generalization">Show Table 9<i aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </article>
+        <article class="chart-panel reveal">
+          <header class="chart-header">
+            <div>
+              <span>Long-horizon progress</span>
+              <h3>Subtask-phase supervision</h3>
+            </div>
+            <div class="chart-legend"><em><i class="pi-data"></i>w/o subtask</em><em><i class="with"></i>w/ subtask</em></div>
+          </header>
+          <div class="pair-chart" aria-label="Full-episode success with and without subtask-phase supervision">
+            <div class="pair-row">
+              <span class="pair-label">Instructed Ranking</span>
+              <div class="pair-bars">
+                <div class="pair-bar"><span class="bar baseline" style="width:83.5%"></span><b>83.5</b></div>
+                <div class="pair-bar"><span class="bar ours" style="width:91.0%"></span><b>91.0</b></div>
+              </div>
+            </div>
+            <div class="pair-row">
+              <span class="pair-label">Instructed Stacking</span>
+              <div class="pair-bars">
+                <div class="pair-bar"><span class="bar baseline" style="width:44.5%"></span><b>44.5</b></div>
+                <div class="pair-bar"><span class="bar ours" style="width:58.5%"></span><b>58.5</b></div>
+              </div>
+            </div>
+            <div class="pair-row">
+              <span class="pair-label">Ranking &amp; Stacking</span>
+              <div class="pair-bars">
+                <div class="pair-bar"><span class="bar baseline" style="width:1.5%"></span><b>1.5</b></div>
+                <div class="pair-bar"><span class="bar ours" style="width:16.0%"></span><b>16.0</b></div>
+              </div>
+            </div>
+          </div>
+          <p class="chart-note">Full-episode success (%) over 200 episodes per instruction-conditioned block task.</p>
+          <button class="text-button" type="button" data-expand="table-subtask" aria-expanded="false" aria-controls="table-subtask">Show Table 10 with stage-wise rates<i aria-hidden="true"></i></button>
+          <div class="panel-footer-stat panel-footer-figure">
+            <div class="footer-stat-head">
+              <strong>1.0 → 2.2</strong>
+              <div>
+                <h4>Real-world dual-basket sorting on G1-D</h4>
+                <p>Mean objects placed out of four. Without supervision (bottom row), failed grasps are retried instead of switching objects.</p>
+              </div>
+            </div>
+            <button class="figure-shell" type="button" data-lightbox="assets/images/subtask-phase.png" aria-label="Enlarge dual-basket sorting figure">
+              <img src="assets/images/subtask-phase.png" alt="Dual-basket sorting on Unitree G1-D with and without subtask-phase supervision" loading="lazy">
+              <span class="figure-expand">Expand figure</span>
+            </button>
+          </div>
+        </article>
+      </div>
+      <div class="table-drawer" id="table-real" data-expand-group="callouts" hidden>
+        <div class="table-drawer-head">
+          <div><span>Tables 7–8 · Real-world evaluation</span><h3>Task success rates on three embodiments</h3></div>
+          <button class="drawer-close" type="button" data-expand-close aria-label="Close table">×</button>
+        </div>
+        <div class="drawer-split">
+          <div>
+            <h4>Table 7 · Franka</h4>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead><tr><th scope="col">Model</th><th scope="col">Stack Bowls</th><th scope="col">Object into Box</th></tr></thead>
+                <tbody>
+                <tr><td>π<sub>0.5</sub></td><td>70</td><td>80</td></tr>
+                <tr><td>Motus</td><td>60</td><td>20</td></tr>
+                <tr><td>LingBot-VA</td><td>70</td><td>60</td></tr>
+                <tr><td>Xiaomi Robotics-0</td><td>70</td><td>70</td></tr>
+                <tr><td>Fast-WAM</td><td>60</td><td>30</td></tr>
+                <tr class="ours-row"><td>EWAM (Ours)</td><td><strong>80</strong></td><td><strong>90</strong></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <h4>Table 8 · Dobot and Unitree G1-D</h4>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr><th scope="col" rowspan="2">Model</th><th scope="colgroup" colspan="3">Dobot</th><th scope="colgroup" colspan="2">Unitree G1-D</th></tr>
+                  <tr><th scope="col">Pour Water</th><th scope="col">Tidy Desk</th><th scope="col">Towel</th><th scope="col">Kettle Pouring</th><th scope="col">Pour Beans</th></tr>
+                </thead>
+                <tbody>
+                <tr><td>π<sub>0.5</sub></td><td>30</td><td>20</td><td><strong>40</strong></td><td>60</td><td>60</td></tr>
+                <tr><td>Motus</td><td>30</td><td>10</td><td>30</td><td>30</td><td>40</td></tr>
+                <tr><td>Fast-WAM</td><td>20</td><td>70</td><td>0</td><td>20</td><td>30</td></tr>
+                <tr class="ours-row"><td>EWAM (Ours)</td><td><strong>70</strong></td><td><strong>80</strong></td><td><strong>40</strong></td><td><strong>70</strong></td><td><strong>80</strong></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <p class="table-caption">Success rate (%) over physical trials on each task. EWAM attains the highest available success rate on every task and ties π<sub>0.5</sub> on the Dobot towel task.</p>
+      </div>
+      <div class="table-drawer" id="table-generalization" data-expand-group="callouts" hidden>
+        <div class="table-drawer-head">
+          <div><span>Table 9 · Stage-resolved generalization</span><h3>G1-D pour beans, one factor varied at a time</h3></div>
+          <button class="drawer-close" type="button" data-expand-close aria-label="Close table">×</button>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th scope="col">Condition</th><th scope="col">Trials</th><th scope="col">S</th><th scope="col">P</th><th scope="col">F</th><th scope="col">Success (%)</th></tr></thead>
+            <tbody>
+                <tr><td>In-domain baseline</td><td>10</td><td>8</td><td>2</td><td>0</td><td>80.0</td></tr>
+                <tr><td>Cup instance</td><td>10</td><td>7</td><td>3</td><td>0</td><td>70.0</td></tr>
+                <tr><td>Placement</td><td>10</td><td>7</td><td>2</td><td>1</td><td>70.0</td></tr>
+                <tr><td>Background and clutter</td><td>10</td><td>6</td><td>4</td><td>0</td><td>60.0</td></tr>
+                <tr class="ours-row"><td>All held-out conditions</td><td>30</td><td>20</td><td>9</td><td>1</td><td><strong>66.7</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-caption">S: completed with no stage error; P: at least one stage fails but the episode runs to completion; F: outright failure. Success counts S only. Failures concentrate near pouring: across all 40 trials, grasping succeeds in 39, alignment in 29, and pouring in 28, and most incomplete trials involve spills from inaccurate cup alignment.</p>
+      </div>
+      <div class="table-drawer" id="table-subtask" data-expand-group="callouts" hidden>
+        <div class="table-drawer-head">
+          <div><span>Table 10 · Subtask-phase supervision</span><h3>Long-horizon block tasks</h3></div>
+          <button class="drawer-close" type="button" data-expand-close aria-label="Close table">×</button>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table grouped">
+            <thead><tr><th scope="col">Task</th><th scope="col">Setting</th><th scope="col">Grasp</th><th scope="col">Place</th><th scope="col">Stack</th><th scope="col">Full</th></tr></thead>
+            <tbody>
+                <tr><th scope="rowgroup" rowspan="2">Instructed Ranking</th><td>w/o subtask</td><td>94.0</td><td>89.5</td><td>–</td><td>83.5</td></tr>
+                <tr class="ours-row"><td>w/ subtask</td><td>93.5</td><td>97.5</td><td>–</td><td><strong>91.0</strong></td></tr>
+                <tr><th scope="rowgroup" rowspan="2">Instructed Stacking</th><td>w/o subtask</td><td>91.5</td><td>–</td><td>44.5</td><td>44.5</td></tr>
+                <tr class="ours-row"><td>w/ subtask</td><td>98.5</td><td>–</td><td>58.5</td><td><strong>58.5</strong></td></tr>
+                <tr><th scope="rowgroup" rowspan="2">Instructed Ranking &amp; Stacking</th><td>w/o subtask</td><td>60.0</td><td>37.0</td><td>24.5</td><td>1.5</td></tr>
+                <tr class="ours-row"><td>w/ subtask</td><td>63.0</td><td>51.5</td><td>39.5</td><td><strong>16.0</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-caption">Success rates (%) over 200 episodes per task. Grasp, Place, and Stack are stage-wise completion rates; Full is complete-episode success. Dashes mark inapplicable stages.</p>
+      </div>
+    </section>
+
+    <section class="section human-section" id="human-data">
+      <div class="section-kicker">05 / Human egocentric data</div>
+      <div class="section-heading split-heading">
+        <h2>Low-cost human data for transfer and robustness</h2>
+        <p>
+          EWAM uses human data in two separate ways: large-scale public egocentric video for pretraining,
+          and self-collected task demonstrations retargeted to the robot for co-training.
+        </p>
+      </div>
+
+      <div class="route-head reveal">
+        <span class="route-index">Route 1</span>
+        <div>
+          <h3>Human pretraining improves cross-embodiment transfer</h3>
+          <p>About 2,084 hours of VITRA-1M, EgoDex, and Xperience video are reduced to one camera-relative wrist-motion action space. Policies trained on four RoboTwin robots are then evaluated on the held-out Aloha-Agilex-2; the compared policies differ only in whether they start from human pretraining.</p>
+        </div>
+      </div>
+      <div class="route-grid">
+        <article class="chart-panel route-chart reveal">
+          <header class="chart-header">
+            <div>
+              <span>Held-out robot embodiment</span>
+              <h3>Human pretraining improves transfer</h3>
+            </div>
+            <div class="chart-legend"><em><i class="without"></i>Without human pretraining</em><em><i class="with"></i>With human pretraining</em></div>
+          </header>
+          <div class="vertical-chart" aria-label="Cross-embodiment success at four robot-training checkpoints">
+            <div class="y-guide guide-60"><span>60</span></div>
+            <div class="y-guide guide-40"><span>40</span></div>
+            <div class="y-guide guide-20"><span>20</span></div>
+            <div class="bar-group">
+              <div class="column without" style="height:41.875%"><span>33.5</span></div>
+              <div class="column with" style="height:55.375%"><span>44.3</span></div>
+              <b>40K</b>
+            </div>
+            <div class="bar-group">
+              <div class="column without" style="height:46.5%"><span>37.2</span></div>
+              <div class="column with" style="height:66.75%"><span>53.4</span></div>
+              <b>50K</b>
+            </div>
+            <div class="bar-group">
+              <div class="column without" style="height:50.125%"><span>40.1</span></div>
+              <div class="column with" style="height:73.625%"><span>58.9</span></div>
+              <b>80K</b>
+            </div>
+            <div class="bar-group">
+              <div class="column without" style="height:45.25%"><span>36.2</span></div>
+              <div class="column with" style="height:83.625%"><span>66.9</span></div>
+              <b>120K</b>
+            </div>
+          </div>
+          <p class="chart-note">Aggregate success over 50 RoboTwin 2.0 tasks on the unseen Aloha-Agilex-2 embodiment.</p>
+        </article>
+        <div class="human-facts">
+          <article><strong>2,084 h</strong><p>Public egocentric video, with wrist motion as the action target.</p></article>
+          <article><strong>40.1 → 66.9%</strong><p>Best held-out-embodiment success without and with human pretraining.</p></article>
+          <article><strong>36.2 → 66.9%</strong><p>Matched budget of 120K robot-training steps: a 30.7-point gain.</p></article>
+          <article><strong>40 → 60%</strong><p>G1-D pouring under the same 60 robot + 30 human co-training mixture, robot- vs. human-pretrained.</p></article>
+        </div>
+      </div>
+
+      <div class="route-head reveal">
+        <span class="route-index">Route 2</span>
+        <div>
+          <h3>Egocentric co-training improves real-robot robustness</h3>
+          <p>For co-training, we record task-specific demonstrations with a headset and wrist trackers, convert them into robot-compatible observation–action trajectories, verify them by replay, and mix them with robot episodes.</p>
+        </div>
+      </div>
+      <div class="route-steps">
+        <div class="step-label"><b>1</b>Capture</div>
+        <figure class="paper-figure capture-figure reveal">
+          <button class="figure-shell" type="button" data-lightbox="assets/images/ego-collection-system.png" aria-label="Enlarge capture system figure">
+            <img src="assets/images/ego-collection-system.png" alt="Egocentric demonstration collection system with a Lumos Ego headset and two wrist-mounted Vive Trackers">
+            <span class="figure-expand">Expand figure</span>
+          </button>
+          <figcaption>A headset records fisheye RGB, depth, and camera motion, while two wrist trackers measure metric 6-DoF wrist motion.</figcaption>
+        </figure>
+      </div>
+      <div class="route-steps">
+        <div class="step-label"><b>2</b>Convert</div>
+      <figure class="paper-figure reveal">
+        <button class="figure-shell" type="button" data-lightbox="assets/images/ego-pipeline.png" aria-label="Enlarge trajectory construction figure">
+          <img src="assets/images/ego-pipeline.png" alt="Egocentric capture and observation-action trajectory construction" loading="lazy">
+          <span class="figure-expand">Expand figure</span>
+        </button>
+        <figcaption>Hand reconstruction, tool alignment, and grasp-state estimation turn each human recording into robot trajectories paired with the captured images.</figcaption>
+      </figure>
+      </div>
+      <div class="route-steps">
+        <div class="step-label"><b>3</b>Verify</div>
+      <figure class="paper-figure reveal">
+        <button class="figure-shell" type="button" data-lightbox="assets/images/human-robot-replay.png" aria-label="Enlarge replay figure">
+          <img src="assets/images/human-robot-replay.png" alt="Human egocentric demonstration, simulation replay, and physical robot replay" loading="lazy">
+          <span class="figure-expand">Expand figure</span>
+        </button>
+        <figcaption>The same pour as a human recording, a simulation replay, and a real G1-D replay. Robot rows replay the converted trajectories, not policy rollouts.</figcaption>
+      </figure>
+      </div>
+      <div class="route-steps">
+        <div class="step-label"><b>4</b>Co-train</div>
+      <article class="chart-panel scaling-chart-panel reveal">
+        <header class="chart-header">
+          <div>
+            <span>Real-robot robustness</span>
+            <h3>Egocentric data scaling under tabletop and cup changes</h3>
+          </div>
+          <div class="chart-legend"><em><i class="robot-data"></i>Robot only</em><em><i class="ego-data"></i>60 robot + egocentric</em></div>
+        </header>
+        <div class="scaling-chart" aria-label="Real-robot success as egocentric data increases">
+          <div class="y-guide guide-60"><span>60</span></div>
+          <div class="y-guide guide-40"><span>40</span></div>
+          <div class="y-guide guide-20"><span>20</span></div>
+          <div class="scale-group">
+            <div class="scale-bar robot-data" style="height:0%"><span>0</span></div>
+            <b>30</b><small>robot only</small>
+          </div>
+          <div class="scale-group">
+            <div class="scale-bar robot-data" style="height:16.67%"><span>10</span></div>
+            <b>60</b><small>robot only</small>
+          </div>
+          <div class="scale-group">
+            <div class="scale-bar robot-data" style="height:33.33%"><span>20</span></div>
+            <b>90</b><small>robot only</small>
+          </div>
+          <div class="scale-divider" aria-hidden="true"></div>
+          <div class="scale-group">
+            <div class="scale-bar ego-data shade-1" style="height:33.33%"><span>20</span></div>
+            <b>+30</b><small>egocentric</small>
+          </div>
+          <div class="scale-group">
+            <div class="scale-bar ego-data shade-2" style="height:50%"><span>30</span></div>
+            <b>+60</b><small>egocentric</small>
+          </div>
+          <div class="scale-group">
+            <div class="scale-bar ego-data shade-3" style="height:66.67%"><span>40</span></div>
+            <b>+120</b><small>egocentric</small>
+          </div>
+          <div class="scale-group">
+            <div class="scale-bar ego-data shade-4" style="height:100%"><span>60</span></div>
+            <b>+1,000</b><small>egocentric</small>
+          </div>
+        </div>
+        <p class="chart-note">All configurations omit EWAM human and robot pretraining and are evaluated over 10 physical trials.</p>
+      </article>
+      </div>
+      <div class="human-facts route-conclusions">
+        <article><strong>30 episodes</strong><p>Adding 30 egocentric episodes to 60 robot episodes reaches 20%, the same as 90 robot-only episodes, at a much lower collection cost.</p></article>
+        <article><strong>10 → 60%</strong><p>Adding 30 to 1,000 egocentric episodes keeps raising success under tablecloth and cup changes, without saturating.</p></article>
+      </div>
+    </section>
+
+    <section class="section demos-section" id="demos">
+      <div class="section-kicker">06 / Demonstrations</div>
+      <div class="section-heading split-heading">
+        <h2>From everyday manipulation to long-horizon control</h2>
+        <p>Demonstration videos will showcase semantic grounding, predictive control, cross-embodiment transfer, and long-horizon execution.</p>
+      </div>
+      <div class="demo-grid">
+        <button class="demo-card" type="button" data-video-src="" data-title="Adjust Bottle">
+          <span class="demo-index">01</span><span class="play-mark">▶</span>
+          <div><h3>Adjust Bottle</h3><p>Semantic grounding and future-aware action refinement.</p></div>
+          <span class="coming-soon">Video coming soon</span>
+        </button>
+        <button class="demo-card" type="button" data-video-src="" data-title="Long-Horizon Pouring">
+          <span class="demo-index">02</span><span class="play-mark">▶</span>
+          <div><h3>Long-Horizon Pouring</h3><p>Human co-training on a Unitree G1-D humanoid.</p></div>
+          <span class="coming-soon">Video coming soon</span>
+        </button>
+        <button class="demo-card" type="button" data-video-src="" data-title="Dual-Basket Sorting">
+          <span class="demo-index">03</span><span class="play-mark">▶</span>
+          <div><h3>Dual-Basket Sorting</h3><p>Subtask-phase supervision for ordered, long-horizon execution.</p></div>
+          <span class="coming-soon">Video coming soon</span>
+        </button>
+        <button class="demo-card" type="button" data-video-src="" data-title="Cross-Embodiment Transfer">
+          <span class="demo-index">04</span><span class="play-mark">▶</span>
+          <div><h3>Cross-Embodiment Transfer</h3><p>Human-pretrained initialization on a held-out robot embodiment.</p></div>
+          <span class="coming-soon">Video coming soon</span>
+        </button>
+        <button class="demo-card" type="button" data-video-src="" data-title="Tabletop and Cup Changes">
+          <span class="demo-index">05</span><span class="play-mark">▶</span>
+          <div><h3>Scene Variations</h3><p>Robustness under tablecloth and cup changes.</p></div>
+          <span class="coming-soon">Video coming soon</span>
+        </button>
+        <button class="demo-card" type="button" data-video-src="" data-title="Multi-Embodiment Control">
+          <span class="demo-index">06</span><span class="play-mark">▶</span>
+          <div><h3>Multi-Embodiment Control</h3><p>Franka, Dobot, and Unitree G1-D tasks.</p></div>
+          <span class="coming-soon">Video coming soon</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="section authors-section" id="authors">
+      <div class="section-kicker">07 / Authors</div>
+      <div class="section-heading">
+        <h2>Authors</h2>
+      </div>
+      <div class="author-groups">
+        <article>
+          <h3>Core Contributors</h3>
+          <p>Hao Wang<sup>1,2</sup>, Jiajun Wen<sup>3</sup>, Jingzhi Liu<sup>1</sup>, Shuoshuo Xue<sup>1</sup>, Zhiliang Chen<sup>2,4</sup></p>
+        </article>
+        <article>
+          <h3>Contributors</h3>
+          <p>Min Lin<sup>1</sup>, Yicheng Chang<sup>1</sup>, Xiaoyu Guo<sup>5</sup>, Yukang Zhuo<sup>1</sup>, Zheng Chong<sup>1</sup>, Yunshuang Nie<sup>3</sup>, Jian Zhang<sup>6</sup>, Weijia Liufu<sup>1</sup>, Qingman Wu<sup>1</sup>, Heming Xu<sup>7</sup>, Dantong Wu<sup>8</sup>, Zhiyuan Wang<sup>8</sup></p>
+        </article>
+        <article>
+          <h3>Guidance Group</h3>
+          <p>Hang Xu<sup>8</sup>, Jianhua Han<sup>8</sup>, Bokui Chen<sup>3</sup>, Shen Zhao<sup>1</sup></p>
+        </article>
+        <article>
+          <h3>Project Leaders</h3>
+          <p>Rui Li<sup>8</sup>, Xiaodan Liang<sup>1,8</sup></p>
+        </article>
+      </div>
+      <ol class="affiliations">
+        <li>Sun Yat-sen University</li>
+        <li>Beijing Zhongguancun Academy</li>
+        <li>Tsinghua University</li>
+        <li>Fudan University</li>
+        <li>South China University of Technology</li>
+        <li>Mohamed bin Zayed University of Artificial Intelligence</li>
+        <li>Northwest University, Xi'an</li>
+        <li>Yinwang Intelligent Technology Co. Ltd.</li>
+      </ol>
+    </section>
+
+    <section class="section citation-section" id="citation">
+      <div class="section-kicker">08 / Cite</div>
+      <div class="citation-grid">
+        <div>
+          <h2>Read and cite EWAM</h2>
+          <p>Download the full technical report or copy the citation.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="assets/EWAM_Technical_Report.pdf">Technical report</a>
+            <button class="button secondary" id="copy-citation" type="button">Copy BibTeX</button>
+          </div>
+        </div>
+        <pre id="bibtex"><code>@techreport{wang2026ewam,
+  title  = {{EWAM}: Emergent Depth-Wise Specialization in a Unified Embodied Model --- From Semantic Understanding through Visual Foresight to Action},
+  author = {Wang, Hao and Wen, Jiajun and Liu, Jingzhi and Xue, Shuoshuo and Chen, Zhiliang and others},
+  institution = {Yinwang Intelligent Technology Co. Ltd.},
+  year   = {2026}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="wordmark footer-mark" href="#top"><span class="vl">E</span><span class="video">W</span><span class="action">A</span><span class="fusion">M</span></a>
+    <p>Emergent Depth-Wise Specialization in a Unified Embodied Model</p>
+    <p>© 2026 EWAM Project</p>
+  </footer>
+
+  <dialog class="lightbox" id="image-lightbox">
+    <button class="modal-close" type="button" aria-label="Close image">×</button>
+    <img hidden alt="">
+  </dialog>
+
+  <dialog class="video-modal" id="video-modal">
+    <button class="modal-close" type="button" aria-label="Close video">×</button>
+    <h2></h2>
+    <video controls playsinline></video>
+    <div class="video-empty">
+      <span>▶</span>
+      <p>Video will be added here.</p>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">BibTeX copied</div>
+  <script src="script.js?v=20260929-2"></script>
+</body>
+</html>

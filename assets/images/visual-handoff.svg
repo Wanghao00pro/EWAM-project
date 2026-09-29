@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="430" viewBox="0 0 760 430">
+<rect width="760" height="430" fill="#FFFFFF"/>
+<text x="8" y="22" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="bold" text-anchor="start" fill="#222222"></text>
+<rect x="80.00" y="62.00" width="213.59" height="250.00" fill="#F7F7F7"/>
+<text x="186.79310344827587" y="86" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#666666">Shallow</text>
+<rect x="293.59" y="62.00" width="224.83" height="250.00" fill="#ECECEC"/>
+<text x="406.0" y="86" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#666666">Middle</text>
+<rect x="518.41" y="62.00" width="213.59" height="250.00" fill="#F7F7F7"/>
+<text x="625.2068965517242" y="86" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#666666">Deep</text>
+<line x1="80" y1="312.00" x2="732" y2="312.00" stroke="#D8D8D8" stroke-width="1"/>
+<text x="68" y="319.0" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="end" fill="#555555">0</text>
+<line x1="80" y1="266.55" x2="732" y2="266.55" stroke="#D8D8D8" stroke-width="1"/>
+<text x="68" y="273.54545454545456" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="end" fill="#555555">10</text>
+<line x1="80" y1="221.09" x2="732" y2="221.09" stroke="#D8D8D8" stroke-width="1"/>
+<text x="68" y="228.0909090909091" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="end" fill="#555555">20</text>
+<line x1="80" y1="175.64" x2="732" y2="175.64" stroke="#D8D8D8" stroke-width="1"/>
+<text x="68" y="182.63636363636365" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="end" fill="#555555">30</text>
+<line x1="80" y1="130.18" x2="732" y2="130.18" stroke="#D8D8D8" stroke-width="1"/>
+<text x="68" y="137.1818181818182" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="end" fill="#555555">40</text>
+<line x1="80" y1="84.73" x2="732" y2="84.73" stroke="#D8D8D8" stroke-width="1"/>
+<text x="68" y="91.72727272727275" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="end" fill="#555555">50</text>
+<line x1="80.00" y1="312" x2="80.00" y2="319" stroke="#555555" stroke-width="1"/>
+<text x="80.0" y="341" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#222222">0</text>
+<line x1="192.41" y1="312" x2="192.41" y2="319" stroke="#555555" stroke-width="1"/>
+<text x="192.41379310344828" y="341" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#222222">5</text>
+<line x1="304.83" y1="312" x2="304.83" y2="319" stroke="#555555" stroke-width="1"/>
+<text x="304.82758620689657" y="341" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#222222">10</text>
+<line x1="417.24" y1="312" x2="417.24" y2="319" stroke="#555555" stroke-width="1"/>
+<text x="417.2413793103448" y="341" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#222222">15</text>
+<line x1="529.66" y1="312" x2="529.66" y2="319" stroke="#555555" stroke-width="1"/>
+<text x="529.6551724137931" y="341" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#222222">20</text>
+<line x1="642.07" y1="312" x2="642.07" y2="319" stroke="#555555" stroke-width="1"/>
+<text x="642.0689655172414" y="341" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#222222">25</text>
+<line x1="732.00" y1="312" x2="732.00" y2="319" stroke="#555555" stroke-width="1"/>
+<text x="732.0" y="341" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#222222">29</text>
+<line x1="293.59" y1="62" x2="293.59" y2="312" stroke="#999999" stroke-width="1.2" stroke-dasharray="6,5"/>
+<line x1="518.41" y1="62" x2="518.41" y2="312" stroke="#999999" stroke-width="1.2" stroke-dasharray="6,5"/>
+<line x1="80" y1="312" x2="732" y2="312" stroke="#333333" stroke-width="1.5"/>
+<line x1="80" y1="62" x2="80" y2="312" stroke="#333333" stroke-width="1.5"/>
+<polygon points="80.00,252.03 102.48,236.33 124.97,280.20 147.45,264.49 169.93,274.60 192.41,284.67 214.90,264.42 237.38,292.67 259.86,259.63 282.34,270.53 304.83,277.90 327.31,230.45 349.79,214.65 372.28,198.14 394.76,178.09 417.24,204.23 439.72,249.95 462.21,247.63 484.69,246.63 507.17,257.28 529.66,256.00 552.14,265.54 574.62,258.79 597.10,246.75 619.59,235.17 642.07,256.20 664.55,266.51 687.03,251.65 709.52,251.38 732.00,295.95 732.00,296.87 709.52,256.40 687.03,255.61 664.55,272.02 642.07,261.32 619.59,239.45 597.10,252.96 574.62,263.70 552.14,269.52 529.66,260.42 507.17,260.96 484.69,249.59 462.21,255.14 439.72,254.60 417.24,207.24 394.76,182.77 372.28,199.98 349.79,217.01 327.31,231.77 304.83,278.64 282.34,271.44 259.86,260.28 237.38,293.21 214.90,266.15 192.41,285.85 169.93,275.74 147.45,265.86 124.97,281.08 102.48,237.34 80.00,252.68" fill="#59A14F" fill-opacity="0.18" stroke="none"/>
+<polyline points="80.00,252.35 102.48,236.85 124.97,280.62 147.45,265.19 169.93,275.17 192.41,285.24 214.90,265.27 237.38,292.94 259.86,259.95 282.34,270.98 304.83,278.27 327.31,231.13 349.79,215.86 372.28,199.05 394.76,180.38 417.24,205.75 439.72,252.36 462.21,251.42 484.69,248.14 507.17,259.03 529.66,258.36 552.14,267.60 574.62,261.35 597.10,249.98 619.59,237.39 642.07,258.76 664.55,269.30 687.03,253.77 709.52,253.84 732.00,296.41" fill="none" stroke="#59A14F" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon points="80.00,248.76 102.48,119.13 124.97,79.31 147.45,91.25 169.93,108.70 192.41,153.80 214.90,169.93 237.38,127.91 259.86,145.95 282.34,189.61 304.83,183.49 327.31,209.25 349.79,213.57 372.28,250.04 394.76,260.91 417.24,279.62 439.72,288.01 462.21,295.39 484.69,306.21 507.17,307.21 529.66,306.09 552.14,307.48 574.62,308.76 597.10,309.72 619.59,310.10 642.07,308.99 664.55,308.64 687.03,308.11 709.52,308.71 732.00,307.57 732.00,308.01 709.52,309.15 687.03,308.62 664.55,309.06 642.07,309.31 619.59,310.34 597.10,310.05 574.62,309.16 552.14,307.89 529.66,306.79 507.17,307.48 484.69,306.66 462.21,296.23 439.72,288.99 417.24,281.07 394.76,262.26 372.28,252.16 349.79,215.22 327.31,210.99 304.83,186.02 282.34,191.76 259.86,148.22 237.38,130.47 214.90,172.53 192.41,156.72 169.93,112.18 147.45,95.25 124.97,83.81 102.48,123.10 80.00,250.28" fill="#B07AA1" fill-opacity="0.18" stroke="none"/>
+<polyline points="80.00,249.52 102.48,121.11 124.97,81.55 147.45,93.27 169.93,110.40 192.41,155.30 214.90,171.20 237.38,129.19 259.86,147.07 282.34,190.71 304.83,184.75 327.31,210.11 349.79,214.37 372.28,251.25 394.76,261.58 417.24,280.37 439.72,288.51 462.21,295.82 484.69,306.45 507.17,307.35 529.66,306.48 552.14,307.69 574.62,308.97 597.10,309.90 619.59,310.23 642.07,309.16 664.55,308.86 687.03,308.38 709.52,308.95 732.00,307.80" fill="none" stroke="#B07AA1" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="406.0" y="370" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#222222">Transformer layer</text>
+<text x="26" y="187.0" font-family="Arial, Helvetica, sans-serif" font-size="19" text-anchor="middle" fill="#222222" transform="rotate(-90 26 187.0)">Attention mass (%)</text>
+<line x1="205" y1="410" x2="240" y2="410" stroke="#59A14F" stroke-width="4"/>
+<text x="249" y="416" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="start" fill="#222222">Future frames</text>
+<line x1="430" y1="410" x2="465" y2="410" stroke="#B07AA1" stroke-width="4"/>
+<text x="474" y="416" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="start" fill="#222222">VLM image</text>
+</svg>
