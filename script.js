@@ -100,9 +100,124 @@ document.querySelectorAll("[data-lightbox]").forEach((button) => {
     const sourceImage = button.querySelector("img");
     imageDialogImage.alt = sourceImage?.alt || "Expanded figure";
     imageDialogImage.hidden = false;
+    resetZoom();
     imageDialog.showModal();
   });
 });
+
+const zoomStage = imageDialog?.querySelector(".lightbox-stage");
+const zoomLabel = imageDialog?.querySelector(".zoom-level");
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 8;
+let zoom = 1;
+let panX = 0;
+let panY = 0;
+const pointers = new Map();
+let gesture = null;
+
+function applyZoom() {
+  if (!imageDialogImage) return;
+  const width = imageDialogImage.offsetWidth;
+  const height = imageDialogImage.offsetHeight;
+  panX = Math.min(0, Math.max(width - width * zoom, panX));
+  panY = Math.min(0, Math.max(height - height * zoom, panY));
+  imageDialogImage.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
+  if (zoomLabel) zoomLabel.textContent = `${Math.round(zoom * 100)}%`;
+  zoomStage?.classList.toggle("is-zoomed", zoom > 1);
+}
+
+function resetZoom() {
+  zoom = 1;
+  panX = 0;
+  panY = 0;
+  applyZoom();
+}
+
+function imagePoint(clientX, clientY) {
+  const rect = zoomStage.getBoundingClientRect();
+  return {
+    x: clientX - rect.left - imageDialogImage.offsetLeft,
+    y: clientY - rect.top - imageDialogImage.offsetTop,
+  };
+}
+
+function zoomAt(point, nextZoom) {
+  const target = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, nextZoom));
+  panX = point.x - ((point.x - panX) * target) / zoom;
+  panY = point.y - ((point.y - panY) * target) / zoom;
+  zoom = target;
+  applyZoom();
+}
+
+function zoomAtCenter(nextZoom) {
+  zoomAt({ x: imageDialogImage.offsetWidth / 2, y: imageDialogImage.offsetHeight / 2 }, nextZoom);
+}
+
+if (zoomStage && imageDialogImage) {
+  zoomStage.addEventListener(
+    "wheel",
+    (event) => {
+      event.preventDefault();
+      zoomAt(imagePoint(event.clientX, event.clientY), zoom * Math.exp(-event.deltaY * 0.0015));
+    },
+    { passive: false },
+  );
+
+  zoomStage.addEventListener("dblclick", (event) => {
+    if (zoom > 1) resetZoom();
+    else zoomAt(imagePoint(event.clientX, event.clientY), 2.5);
+  });
+
+  zoomStage.addEventListener("pointerdown", (event) => {
+    zoomStage.setPointerCapture(event.pointerId);
+    pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    const [a, b] = [...pointers.values()];
+    gesture = b
+      ? { distance: Math.hypot(b.x - a.x, b.y - a.y), zoom }
+      : { x: a.x, y: a.y, panX, panY };
+    zoomStage.classList.toggle("is-dragging", !b && zoom > 1);
+  });
+
+  zoomStage.addEventListener("pointermove", (event) => {
+    if (!pointers.has(event.pointerId) || !gesture) return;
+    pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    const [a, b] = [...pointers.values()];
+    if (b && gesture.distance) {
+      const mid = imagePoint((a.x + b.x) / 2, (a.y + b.y) / 2);
+      zoomAt(mid, (gesture.zoom * Math.hypot(b.x - a.x, b.y - a.y)) / gesture.distance);
+    } else if (!b && gesture.panX !== undefined && zoom > 1) {
+      panX = gesture.panX + a.x - gesture.x;
+      panY = gesture.panY + a.y - gesture.y;
+      applyZoom();
+    }
+  });
+
+  const endPointer = (event) => {
+    pointers.delete(event.pointerId);
+    const [a] = [...pointers.values()];
+    gesture = a ? { x: a.x, y: a.y, panX, panY } : null;
+    zoomStage.classList.remove("is-dragging");
+  };
+  zoomStage.addEventListener("pointerup", endPointer);
+  zoomStage.addEventListener("pointercancel", endPointer);
+
+  imageDialog.querySelectorAll("[data-zoom]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const action = button.dataset.zoom;
+      if (action === "reset") resetZoom();
+      else zoomAtCenter(zoom * (action === "in" ? 1.5 : 1 / 1.5));
+    });
+  });
+
+  imageDialog.addEventListener("keydown", (event) => {
+    if (event.key === "+" || event.key === "=") zoomAtCenter(zoom * 1.5);
+    else if (event.key === "-") zoomAtCenter(zoom / 1.5);
+    else if (event.key === "0") resetZoom();
+  });
+
+  imageDialogImage.addEventListener("load", resetZoom);
+  window.addEventListener("resize", applyZoom);
+}
 
 const videoDialog = document.querySelector("#video-modal");
 const video = videoDialog?.querySelector("video");
@@ -172,3 +287,17 @@ copyButton?.addEventListener("click", async () => {
     toast?.classList.remove("show");
   }, 1800);
 });
+
+const demoVideos = document.querySelectorAll(".demo-video video");
+if ("IntersectionObserver" in window) {
+  const demoObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.play().catch(() => {});
+        else entry.target.pause();
+      });
+    },
+    { threshold: 0.4 },
+  );
+  demoVideos.forEach((demoVideo) => demoObserver.observe(demoVideo));
+}

@@ -6,7 +6,7 @@
   <meta name="description" content="EWAM is an action-centric unified embodied model with emergent depth-wise specialization from semantic understanding through visual foresight to action formation.">
   <meta name="theme-color" content="#f7f8f5">
   <title>EWAM — Emergent Depth-Wise Specialization</title>
-  <link rel="stylesheet" href="styles.css?v=20260929-14">
+  <link rel="stylesheet" href="styles.css?v=20260930-8">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -44,10 +44,19 @@
         <p class="hero-deck">From semantic understanding, through visual foresight, to action formation.</p>
         <div class="hero-actions">
           <a class="button primary" href="assets/EWAM_Technical_Report.pdf">Technical report</a>
-          <a class="button secondary disabled" aria-disabled="true">Code <small>coming soon</small></a>
-          <a class="button secondary disabled" aria-disabled="true" data-model-link>Model <small>coming soon</small></a>
+          <a class="button secondary code-link" href="https://github.com/Wanghao00pro/EWAM" target="_blank" rel="noopener">Code <small>GitHub</small></a>
+          <a class="button secondary model-link" href="https://huggingface.co/HaoWang00/EWAM" target="_blank" rel="noopener" data-model-link>Model <small>Hugging Face</small></a>
         </div>
       </div>
+      <figure class="hero-figure">
+        <button class="figure-shell" type="button" data-lightbox="assets/images/ewam-overview.png" aria-label="Enlarge EWAM overview figure">
+          <picture>
+            <source srcset="assets/images/ewam-overview.webp" type="image/webp">
+            <img src="assets/images/ewam-overview.png" width="3600" height="2249" alt="EWAM overview: a unified embodied model whose vision-language, video, and action experts specialize by depth, evaluated across simulation and real-robot embodiments.">
+          </picture>
+          <span class="figure-expand">Expand figure</span>
+        </button>
+      </figure>
       <div class="hero-visual" aria-label="EWAM depth-wise specialization">
         <div class="depth-rail">
           <span>Network depth · shallow to deep</span>
@@ -111,7 +120,7 @@
           </div>
           <div class="figure-tags"><em class="tag-handoff">Depth-wise handoff</em></div>
         </figcaption>
-        <button class="figure-shell" type="button" data-lightbox="assets/images/paradigm-comparison.png" aria-label="Enlarge paradigm comparison">
+        <button class="figure-shell" type="button" data-lightbox="assets/images/paradigm-comparison-hd.png" aria-label="Enlarge paradigm comparison">
           <img src="assets/images/paradigm-comparison.png" alt="Comparison of VLA, WAM, Motus, and EWAM architectures and action-attention maps">
           <span class="figure-expand">Expand figure</span>
         </button>
@@ -125,7 +134,7 @@
         <p>The action stream can read every expert. Perceptual queries remain within their own streams.</p>
       </div>
       <div class="architecture-grid">
-        <button class="figure-shell architecture-figure reveal" type="button" data-lightbox="assets/images/architecture.png" aria-label="Enlarge architecture figure">
+        <button class="figure-shell architecture-figure reveal" type="button" data-lightbox="assets/images/architecture-hd.png" aria-label="Enlarge architecture figure">
           <img src="assets/images/architecture.png" alt="EWAM unified architecture with vision-language, action, and video experts">
           <span class="figure-expand">Expand figure</span>
         </button>
@@ -236,7 +245,7 @@
             <p>Splitting visual attention into the current image and the predicted future frames.<br><strong>Predicted frames replace the current image as the main visual source from about layer 13, on one task (a) and across all 50 RoboTwin tasks (b).</strong></p>
           </div>
         </figcaption>
-        <button class="figure-shell" type="button" data-lightbox="assets/images/depth-specialization.png" aria-label="Enlarge visual handoff figure">
+        <button class="figure-shell" type="button" data-lightbox="assets/images/depth-specialization-hd.png" aria-label="Enlarge visual handoff figure">
           <img src="assets/images/depth-specialization.png" alt="Fine-grained visual handoff across transformer depth" loading="lazy">
           <span class="figure-expand">Expand figure</span>
         </button>
@@ -807,7 +816,7 @@
       <div class="route-steps">
         <div class="step-label"><b>1</b>Capture</div>
         <figure class="paper-figure capture-figure reveal">
-          <button class="figure-shell" type="button" data-lightbox="assets/images/ego-collection-system.png" aria-label="Enlarge capture system figure">
+          <button class="figure-shell" type="button" data-lightbox="assets/images/ego-collection-system-hd.png" aria-label="Enlarge capture system figure">
             <img src="assets/images/ego-collection-system.png" alt="Egocentric demonstration collection system with a Lumos Ego headset and two wrist-mounted Vive Trackers">
             <span class="figure-expand">Expand figure</span>
           </button>
@@ -826,13 +835,19 @@
       </div>
       <div class="route-steps">
         <div class="step-label"><b>3</b>Verify</div>
+      <div class="verify-media">
       <figure class="paper-figure reveal">
-        <button class="figure-shell" type="button" data-lightbox="assets/images/human-robot-replay.png" aria-label="Enlarge replay figure">
+        <button class="figure-shell" type="button" data-lightbox="assets/images/human-robot-replay-hd.png" aria-label="Enlarge replay figure">
           <img src="assets/images/human-robot-replay.png" alt="Human egocentric demonstration, simulation replay, and physical robot replay" loading="lazy">
           <span class="figure-expand">Expand figure</span>
         </button>
         <figcaption>The same pour as a human recording, a simulation replay, and a real G1-D replay. Robot rows replay the converted trajectories, not policy rollouts.</figcaption>
       </figure>
+      <figure class="paper-figure replay-video reveal">
+        <video src="assets/videos/human-robot-replay.mp4" poster="assets/images/human-robot-replay-poster.jpg" controls playsinline preload="none" width="1920" height="1080"></video>
+        <figcaption>Replay walkthrough: one human demonstration and its simulation and G1-D replays, aligned phase by phase from grasp to release.</figcaption>
+      </figure>
+      </div>
       </div>
       <div class="route-steps">
         <div class="step-label"><b>4</b>Co-train</div>
@@ -890,40 +905,34 @@
     <section class="section demos-section" id="demos">
       <div class="section-kicker">06 / Demonstrations</div>
       <div class="section-heading split-heading">
-        <h2>From everyday manipulation to long-horizon control</h2>
-        <p>Demonstration videos will showcase semantic grounding, predictive control, cross-embodiment transfer, and long-horizon execution.</p>
+        <h2>Real-world manipulation across embodiments</h2>
+        <p>Rollouts of EWAM across embodiments and tasks.</p>
       </div>
       <div class="demo-grid">
-        <button class="demo-card" type="button" data-video-src="" data-title="Adjust Bottle">
-          <span class="demo-index">01</span><span class="play-mark">▶</span>
-          <div><h3>Adjust Bottle</h3><p>Semantic grounding and future-aware action refinement.</p></div>
-          <span class="coming-soon">Video coming soon</span>
-        </button>
-        <button class="demo-card" type="button" data-video-src="" data-title="Long-Horizon Pouring">
-          <span class="demo-index">02</span><span class="play-mark">▶</span>
-          <div><h3>Long-Horizon Pouring</h3><p>Human co-training on a Unitree G1-D humanoid.</p></div>
-          <span class="coming-soon">Video coming soon</span>
-        </button>
-        <button class="demo-card" type="button" data-video-src="" data-title="Dual-Basket Sorting">
-          <span class="demo-index">03</span><span class="play-mark">▶</span>
-          <div><h3>Dual-Basket Sorting</h3><p>Subtask-phase supervision for ordered, long-horizon execution.</p></div>
-          <span class="coming-soon">Video coming soon</span>
-        </button>
-        <button class="demo-card" type="button" data-video-src="" data-title="Cross-Embodiment Transfer">
-          <span class="demo-index">04</span><span class="play-mark">▶</span>
-          <div><h3>Cross-Embodiment Transfer</h3><p>Human-pretrained initialization on a held-out robot embodiment.</p></div>
-          <span class="coming-soon">Video coming soon</span>
-        </button>
-        <button class="demo-card" type="button" data-video-src="" data-title="Tabletop and Cup Changes">
-          <span class="demo-index">05</span><span class="play-mark">▶</span>
-          <div><h3>Scene Variations</h3><p>Robustness under tablecloth and cup changes.</p></div>
-          <span class="coming-soon">Video coming soon</span>
-        </button>
-        <button class="demo-card" type="button" data-video-src="" data-title="Multi-Embodiment Control">
-          <span class="demo-index">06</span><span class="play-mark">▶</span>
-          <div><h3>Multi-Embodiment Control</h3><p>Franka, Dobot, and Unitree G1-D tasks.</p></div>
-          <span class="coming-soon">Video coming soon</span>
-        </button>
+        <figure class="demo-video">
+          <video src="assets/videos/demo-05.mp4" muted loop playsinline controls preload="metadata"></video>
+          <figcaption><span class="demo-index">01</span><span>Towel<small>Dobot dual-arm</small></span></figcaption>
+        </figure>
+        <figure class="demo-video">
+          <video src="assets/videos/demo-06.mp4" muted loop playsinline controls preload="metadata"></video>
+          <figcaption><span class="demo-index">02</span><span>Tidy Desk<small>Dobot dual-arm</small></span></figcaption>
+        </figure>
+        <figure class="demo-video">
+          <video src="assets/videos/demo-07.mp4" muted loop playsinline controls preload="metadata"></video>
+          <figcaption><span class="demo-index">03</span><span>Pour Water<small>Dobot dual-arm</small></span></figcaption>
+        </figure>
+        <figure class="demo-video">
+          <video src="assets/videos/demo-04.mp4" muted loop playsinline controls preload="metadata"></video>
+          <figcaption><span class="demo-index">04</span><span>Stack Bowls<small>Franka</small></span></figcaption>
+        </figure>
+        <figure class="demo-video">
+          <video src="assets/videos/demo-08.mp4" muted loop playsinline controls preload="metadata"></video>
+          <figcaption><span class="demo-index">05</span><span>Pour Beans<small>Unitree G1-D</small></span></figcaption>
+        </figure>
+        <figure class="demo-video">
+          <video src="assets/videos/demo-01.mp4" muted loop playsinline controls preload="metadata"></video>
+          <figcaption><span class="demo-index">06</span><span>Pour Beans · Tablecloth Change<small>Unitree G1-D</small></span></figcaption>
+        </figure>
       </div>
     </section>
 
@@ -939,15 +948,15 @@
         </article>
         <article>
           <h3>Contributors</h3>
-          <p>Min Lin<sup>1</sup>, Yicheng Chang<sup>1</sup>, Xiaoyu Guo<sup>5</sup>, Yukang Zhuo<sup>1</sup>, Zheng Chong<sup>1</sup>, Yunshuang Nie<sup>3</sup>, Jian Zhang<sup>6</sup>, Weijia Liufu<sup>1</sup>, Qingman Wu<sup>1</sup>, Heming Xu<sup>7</sup>, Dantong Wu<sup>8</sup>, Zhiyuan Wang<sup>8</sup></p>
+          <p>Min Lin<sup>1</sup>, Yicheng Chang<sup>1</sup>, Xiaoyu Guo<sup>5</sup>, Yukang Zhuo<sup>1</sup>, Zheng Chong<sup>1</sup>, Yunshuang Nie<sup>3</sup>, Jian Zhang<sup>6</sup>, Weijia Liufu<sup>1</sup>, Qingman Wu<sup>1</sup>, Heming Xu<sup>7</sup>, Bingchang Song<sup>8</sup>, Dantong Wu<sup>9</sup>, Zhiyuan Wang<sup>9</sup></p>
         </article>
         <article>
           <h3>Guidance Group</h3>
-          <p>Hang Xu<sup>8</sup>, Jianhua Han<sup>8</sup>, Bokui Chen<sup>3</sup>, Shen Zhao<sup>1</sup></p>
+          <p>Hang Xu<sup>9</sup>, Jianhua Han<sup>9</sup>, Bokui Chen<sup>3</sup>, Shen Zhao<sup>1</sup></p>
         </article>
         <article>
           <h3>Project Leaders</h3>
-          <p>Rui Li<sup>8</sup>, Xiaodan Liang<sup>1,8</sup></p>
+          <p>Rui Li<sup>9</sup>, Xiaodan Liang<sup>1,9</sup></p>
         </article>
       </div>
       <ol class="affiliations">
@@ -958,6 +967,7 @@
         <li>South China University of Technology</li>
         <li>Mohamed bin Zayed University of Artificial Intelligence</li>
         <li>Northwest University, Xi'an</li>
+        <li>Southern University of Science and Technology</li>
         <li>Yinwang Intelligent Technology Co. Ltd.</li>
       </ol>
     </section>
@@ -991,7 +1001,15 @@
 
   <dialog class="lightbox" id="image-lightbox">
     <button class="modal-close" type="button" aria-label="Close image">×</button>
-    <img hidden alt="">
+    <div class="lightbox-toolbar" role="group" aria-label="Zoom controls">
+      <button type="button" data-zoom="out" aria-label="Zoom out">−</button>
+      <button type="button" data-zoom="reset" aria-label="Reset zoom" class="zoom-level">100%</button>
+      <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
+    </div>
+    <div class="lightbox-stage">
+      <img hidden alt="" draggable="false">
+    </div>
+    <p class="lightbox-hint">Scroll or pinch to zoom · drag to pan · double-click to toggle</p>
   </dialog>
 
   <dialog class="video-modal" id="video-modal">
@@ -1005,6 +1023,6 @@
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite">BibTeX copied</div>
-  <script src="script.js?v=20260929-2"></script>
+  <script src="script.js?v=20260930-2"></script>
 </body>
 </html>
