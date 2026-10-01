@@ -160,14 +160,16 @@ img {
   align-items: center;
 }
 
-.header-paper .header-icon {
+.header-paper .header-icon,
+.button .header-icon {
   width: 15px;
   height: 15px;
   margin: 0 6px 0 0;
   flex: none;
 }
 
-.header-paper .header-emoji {
+.header-paper .header-emoji,
+.button .header-emoji {
   display: inline-block;
   width: auto;
   height: auto;
