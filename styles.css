@@ -155,6 +155,26 @@ img {
   margin-left: 4px;
 }
 
+.header-paper {
+  display: inline-flex;
+  align-items: center;
+}
+
+.header-paper .header-icon {
+  width: 15px;
+  height: 15px;
+  margin: 0 6px 0 0;
+  flex: none;
+}
+
+.header-paper .header-emoji {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  font-size: 15px;
+  line-height: 1;
+}
+
 .nav-toggle {
   display: none;
 }
