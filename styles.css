@@ -137,6 +137,11 @@ img {
   color: var(--ink);
 }
 
+.header-links {
+  display: flex;
+  gap: 8px;
+}
+
 .header-paper {
   padding: 9px 15px;
   border: 1px solid #bfc9ce;
@@ -328,7 +333,6 @@ img {
   background: var(--action);
 }
 
-.button.primary small,
 .button.code-link small,
 .button.model-link small {
   color: inherit;
@@ -2668,7 +2672,7 @@ dialog::backdrop {
     padding: 10px 0;
   }
 
-  .header-paper {
+  .header-links {
     justify-self: end;
   }
 
@@ -2730,8 +2734,17 @@ dialog::backdrop {
     top: 62px;
   }
 
+  .header-links {
+    gap: 5px;
+  }
+
   .header-paper {
-    padding: 8px 12px;
+    padding: 7px 9px;
+    font-size: 12px;
+  }
+
+  .header-paper span {
+    display: none;
   }
 
   .hero {
