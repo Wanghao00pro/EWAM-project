@@ -328,6 +328,7 @@ img {
   background: var(--action);
 }
 
+.button.primary small,
 .button.code-link small,
 .button.model-link small {
   color: inherit;
